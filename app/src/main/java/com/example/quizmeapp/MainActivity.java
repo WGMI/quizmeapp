@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             fragment.setArguments(bundle);
         }
 
+        //bottomNavigationView.setSelectedItemId(R.id.home);
         if(selection != 0){
             bottomNavigationView.setSelectedItemId(selection);
         }

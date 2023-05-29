@@ -1,6 +1,7 @@
 package com.example.quizmeapp.Models.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.quizmeapp.Fragments.QuizFragment;
+import com.example.quizmeapp.MainActivity;
 import com.example.quizmeapp.Models.Quiz;
 import com.example.quizmeapp.R;
 
@@ -38,6 +41,14 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.ViewHolder> {
         holder.name.setText(quiz.getName());
         holder.date.setText(quiz.getDate());
         holder.desc.setText(quiz.getDescription());
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putLong("id",quiz.getId());
+                ((MainActivity)context).load(new QuizFragment(),bundle,R.id.home);
+            }
+        });
     }
 
     @Override

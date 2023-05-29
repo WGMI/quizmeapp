@@ -2,7 +2,6 @@ package com.example.quizmeapp.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +117,19 @@ public class Home extends Fragment {
         int quizCount = Select.from(Quiz.class).count();
         if(quizCount == 0){
 
+        }else{
+            Quiz quiz = Select.from(Quiz.class).orderBy("id desc").fetchSingle();//Fetch last
+            home_prompt.setText("Continue your last quiz");
+            cont_name.setText(quiz.getName());
+            cont_desc.setText(quiz.getDescription());
+            cont_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("id",quiz.getId());
+                    ((MainActivity)context).load(new QuizFragment(),bundle,R.id.home);
+                }
+            });
         }
     }
 
