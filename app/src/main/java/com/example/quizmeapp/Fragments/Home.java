@@ -16,6 +16,7 @@ import com.example.quizmeapp.MainActivity;
 import com.example.quizmeapp.Models.Adapters.QuizAdapter;
 import com.example.quizmeapp.Models.Quiz;
 import com.example.quizmeapp.R;
+import com.example.quizmeapp.Utils.Helper;
 import com.reactiveandroid.query.Select;
 
 import java.util.ArrayList;
@@ -116,7 +117,15 @@ public class Home extends Fragment {
     private void promptFirstQuiz() {
         int quizCount = Select.from(Quiz.class).count();
         if(quizCount == 0){
-
+            cont_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    String sample = Helper.getSample();
+                    bundle.putString("sample",sample);
+                    ((MainActivity)context).load(new NewQuiz(),bundle,R.id.home);
+                }
+            });
         }else{
             Quiz quiz = Select.from(Quiz.class).orderBy("id desc").fetchSingle();//Fetch last
             home_prompt.setText("Continue your last quiz");

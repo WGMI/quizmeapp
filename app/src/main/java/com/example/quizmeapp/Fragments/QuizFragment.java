@@ -1,16 +1,21 @@
 package com.example.quizmeapp.Fragments;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.quizmeapp.MainActivity;
@@ -48,7 +53,7 @@ public class QuizFragment extends Fragment {
 
     Context context;
     Quiz quiz;
-    TextView counter,question,choice1,choice2,choice3,choice4;
+    TextView counter,correct,question,choice1,choice2,choice3,choice4;
 
     List<Question> questions;
     Question currentQuestion;
@@ -99,6 +104,7 @@ public class QuizFragment extends Fragment {
         count = questions.size();
 
         counter = view.findViewById(R.id.counter);
+        correct = view.findViewById(R.id.correct);
         question = view.findViewById(R.id.question);
         choice1 = view.findViewById(R.id.choice1);
         choice2 = view.findViewById(R.id.choice2);
@@ -189,12 +195,6 @@ public class QuizFragment extends Fragment {
     private void checkAnswer(int index) {
         Log.d("TAG", "checkAnswer: " + questionCounter);
         answered = true;
-        if(index == currentQuestion.getAnswer()){
-            score++;
-            showAnimation(true);
-        }else{
-            showAnimation(false);
-        }
 
         choice1.setTextColor(Color.RED);
         choice2.setTextColor(Color.RED);
@@ -216,19 +216,60 @@ public class QuizFragment extends Fragment {
                 break;
         }
 
-        if(questionCounter < count){
-            nextQuestion();
-            /*Helper.showSuccessDialog(context, "Finished Quiz", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((MainActivity)context).load(new Home(),null,0);
-                }
-            });*/
+        if(index == currentQuestion.getAnswer()){
+            score++;
+            showAnimation(true);
+        }else{
+            showAnimation(false);
         }
+
+
     }
 
-    private void showAnimation(boolean b) {
+    private void showAnimation(boolean iscorrect) {
+        if(iscorrect){
+            correct.setText("Correct");
+            correct.setBackground(context.getDrawable(R.drawable.simple_rounded_bg_green));
+        }else{
+            correct.setText("Incorrect");
+            correct.setBackground(context.getDrawable(R.drawable.simple_rounded_bg_red));
+        }
+        correct.setVisibility(View.VISIBLE);
+        ObjectAnimator fadeInAnimator = ObjectAnimator.ofFloat(correct, "alpha", 0f, 1f);
+        fadeInAnimator.setDuration(1000);
+        fadeInAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(@NonNull Animator animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(@NonNull Animator animation) {
+                correct.setVisibility(View.GONE);
+
+                if(questionCounter < count){
+                    nextQuestion();
+                }else{
+                    Helper.showSuccessDialog(context,"Good Job", "Finished Quiz", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ((MainActivity)context).load(new Home(),null,0);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(@NonNull Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(@NonNull Animator animation) {
+
+            }
+        });
+        fadeInAnimator.start();
     }
 
     private void finishQuiz() {

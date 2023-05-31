@@ -99,6 +99,14 @@ public class NewQuiz extends Fragment {
         Button camera = view.findViewById(R.id.camera);
         Button clear = view.findViewById(R.id.clear);
 
+        Bundle bundle = getArguments();
+
+        if(bundle.getString("sample") != null){
+            Helper.showSuccessDialog(context,"Sample Article","This is an article about the Kenyan environmental hero Wangari Maathai.",null);
+            String sample = bundle.getString("sample");
+            article.setText(sample);
+        }
+
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
