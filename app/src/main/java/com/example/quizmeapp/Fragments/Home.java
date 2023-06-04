@@ -143,11 +143,6 @@ public class Home extends Fragment {
     }
 
     private List<Quiz> getQuizzes() {
-        List<Quiz> quizList = new ArrayList<>();
-        quizList.add(new Quiz(0, "Wangari Mathai", "12/12/12", "Life of Wangari Mathai", null, null));
-        quizList.add(new Quiz(0, "Dedan Kimathi", "12/07/22", "Life of Dedan Kimathi", null, null));
-        quizList.add(new Quiz(0, "Mt Kenya", "15/11/20", "Kenya's highest peak", null, null));
-        quizList.add(new Quiz(0, "Lake Victoria", "12/12/12", "East African Lake", null, null));
-        return quizList;
+        return Select.from(Quiz.class).fetch();
     }
 }
