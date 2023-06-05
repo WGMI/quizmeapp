@@ -2,6 +2,7 @@ package com.example.quizmeapp.Models.Adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,11 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.ViewHolder> {
         holder.name.setText(quiz.getName());
         holder.date.setText(quiz.getDate());
         holder.desc.setText(quiz.getDescription());
+        double score = ((double) quiz.getScore()/quiz.getQuestionCount()) * 100;//((quiz.getScore() / quiz.getQuestionCount()) * 100);
+        Log.d("TAG", score +"");
+        /*String scoreStrig = (quiz.getScore() > 0) ? ((quiz.getScore() / quiz.getQuestionCount()) * 100) + "" : "New";
+        */
+        holder.progress.setText(score+"%");
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

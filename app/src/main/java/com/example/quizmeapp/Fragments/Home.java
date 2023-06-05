@@ -129,6 +129,7 @@ public class Home extends Fragment {
         }else{
             Quiz quiz = Select.from(Quiz.class).orderBy("id desc").fetchSingle();//Fetch last
             home_prompt.setText("Continue your last quiz");
+            continue_progress.setText(((double) quiz.getScore()/quiz.getQuestionCount() * 100) + "%");
             cont_name.setText(quiz.getName());
             cont_desc.setText(quiz.getDescription());
             cont_layout.setOnClickListener(new View.OnClickListener() {

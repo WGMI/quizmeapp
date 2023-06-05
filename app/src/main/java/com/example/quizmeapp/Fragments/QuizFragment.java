@@ -23,6 +23,7 @@ import com.example.quizmeapp.Models.Question;
 import com.example.quizmeapp.Models.Quiz;
 import com.example.quizmeapp.R;
 import com.example.quizmeapp.Utils.Helper;
+import com.google.gson.Gson;
 import com.reactiveandroid.query.Select;
 
 import org.json.JSONArray;
@@ -138,6 +139,7 @@ public class QuizFragment extends Fragment {
     }
 
     private void nextQuestion() {
+        Log.d("TAG", "nextQuestion: " + new Gson().toJson(currentQuestion));
         choice1.setTextColor(Color.parseColor("#000000"));
         choice2.setTextColor(Color.parseColor("#000000"));
         choice3.setTextColor(Color.parseColor("#000000"));
@@ -250,7 +252,9 @@ public class QuizFragment extends Fragment {
                 if(questionCounter < count){
                     nextQuestion();
                 }else{
-                    Helper.showSuccessDialog(context,"Good Job", "Finished Quiz", new DialogInterface.OnClickListener() {
+                    quiz.setScore(score);
+                    quiz.save();
+                    Helper.showSuccessDialog(context,"Good Job", "Finished Quiz\nYou got " + score + "/" + questions.size(), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ((MainActivity)context).load(new Home(),null,0);

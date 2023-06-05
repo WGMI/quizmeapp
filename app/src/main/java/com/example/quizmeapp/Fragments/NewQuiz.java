@@ -101,7 +101,7 @@ public class NewQuiz extends Fragment {
 
         Bundle bundle = getArguments();
 
-        if(bundle.getString("sample") != null){
+        if(bundle != null && bundle.getString("sample") != null){
             Helper.showSuccessDialog(context,"Sample Article","This is an article about the Kenyan environmental hero Wangari Maathai.",null);
             String sample = bundle.getString("sample");
             article.setText(sample);
@@ -137,7 +137,8 @@ public class NewQuiz extends Fragment {
         //msg.setText("Loading...");
 
         String prompt = articleText;
-        prompt += "Test my knowledge of this text with trivia questions. Start easy and get progressively harder. The questions should have 4 options. The answer will be the index of the correct option. Provide an RFC8259 compliant JSON response following this format without deviation.\n";
+        int numberOfQuestions = 10;
+        prompt += "Test my knowledge of this text with trivia questions. Give me either " + numberOfQuestions + " or as many questions as there are distinct facts in the text. Whichever is fewer. Start easy and get progressively harder. The questions should have 4 options. The answer will be the index of the correct option. It should be zero indexed. Provide an RFC8259 compliant JSON response following this format without deviation.\n";
         prompt += "[\n" +
                 "    {\n" +
                 "        \"Q\": \"This is a question\",\n" +

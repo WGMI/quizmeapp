@@ -6,6 +6,9 @@ import com.reactiveandroid.annotation.Column;
 import com.reactiveandroid.annotation.PrimaryKey;
 import com.reactiveandroid.annotation.Table;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 @Table(name = "Quiz", database = AppDB.class)
 public class Quiz extends Model {
 
@@ -21,6 +24,8 @@ public class Quiz extends Model {
     String description;
     @Column
     String questionJSON;
+    @Column
+    int score;
 
     public Quiz(){
 
@@ -89,5 +94,24 @@ public class Quiz extends Model {
 
     public void setQuestionJSON(String questionJSON) {
         this.questionJSON = questionJSON;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getQuestionCount() {
+        int count = 1;
+        try {
+            JSONArray array = new JSONArray(this.getQuestionJSON());
+            count = array.length();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return count;
     }
 }
